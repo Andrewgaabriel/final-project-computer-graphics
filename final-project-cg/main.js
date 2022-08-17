@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene()
 
@@ -25,19 +26,20 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 //renderer.render(scene, camera);
 
 
-
-
+/* TEXTURA DO DONUT */
+const donutTexture = new THREE.TextureLoader().load('earth1.jpg');
+/* --------------------------------------------------------------- */
 
 
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({ color: 0xf0556b });
+const material = new THREE.MeshStandardMaterial({ color: 0xffffff, map: donutTexture });
 const torus = new THREE.Mesh(geometry, material);
 scene.add(torus);
 
 
 
 
-// TENTATIVA DE MOSTRAR UM TEXTO ! FALHOU
+// TENTATIVA DE MOSTRAR UM TEXTO 3D! FALHOU
 /*   const loader = new FontLoader();
 	const font = loader.load( 'Roboto_Regular.json');
 
@@ -72,7 +74,9 @@ scene.add(pointLight, ambientLight);
 /* 
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(500, 100);
-scene.add(lightHelper, gridHelper);
+const axesHelper = new THREE.AxesHelper(20);
+scene.add(axesHelper, lightHelper, gridHelper);
+
  */
 
 
@@ -106,10 +110,10 @@ Array(1500).fill().forEach(addStar);
 
 
 
-/* TEXTURA DO ESPAÇO */
+/*-TEXTURA DO ESPAÇO -------------------------------------------------*/
 const spaceTexture = new THREE.TextureLoader().load('awesomesky.jpg');
 scene.background = spaceTexture;
-/* --------------------------------------------------------------- */
+/* -------------------------------------------------------------------*/
 
 
 
@@ -144,17 +148,35 @@ const moon = new THREE.Mesh(
 
 scene.add(moon);
 
-const axesHelper = new THREE.AxesHelper(20);
-scene.add(axesHelper);
+
+
+const pythonTexture = new THREE.TextureLoader().load('python2.png');
+const python = new THREE.Mesh(
+  new THREE.SphereGeometry(2,32,32),
+  new THREE.MeshStandardMaterial({
+    map: pythonTexture,
+  })
+);
+
+scene.add(python);
+
+
+
+
+
 
 /* POSITIONS */
 
 camera.position.z = 0;
 
 moon.position.z = 10;
-moon.position.x = -10;
+moon.position.x = -15;
 
 andrew.position.x = 3
+
+python.position.x = 3;
+python.position.y = 1.547;
+python.position.z = 25.25;
 
 
 
@@ -168,12 +190,16 @@ function moveCamera() {
   moon.rotation.y += 0.075;
   moon.rotation.z += 0.05;
 
+  python.rotation.x += 0.05;
+  python.rotation.y += 0.075;
+  python.rotation.z += 0.05;
+
 
   /* CRIA UM ORBITA CIRCULAR */
-  /* andrew.position.x = Math.sin(t/100) * 10;
-  andrew.position.y = Math.cos(t/100) * 10;
-  andrew.position.z = Math.sin(t/100) * 10;
-   */
+  moon.position.x = Math.sin(t/200) * 20;
+  moon.position.y = Math.cos(t/200) * 20;
+  moon.position.z = Math.sin(t/200) * 20;
+  
 
   //andrew.position.x = t * -0.01;
 
