@@ -176,6 +176,8 @@ function moveCamera() {
    */
 
   //andrew.position.x = t * -0.01;
+
+  andrew.position.z = t * 0.01;
   
   andrew.rotation.y += 0.01;
   andrew.rotation.z += 0.01;
